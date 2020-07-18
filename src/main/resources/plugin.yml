@@ -1,0 +1,19 @@
+name: KitPvP
+version: ${project.version}
+main: cc.fatenetwork.kitpvp.KitPvP
+api-version: 1.8.8
+authors: [Hackusate_PvP]
+website: www.fatenetwork.cc
+commands:
+  clan:
+    aliases: [clans]
+    description: Main comman executor for clans.
+  combat:
+    aliases: [ct]
+    description: Check to see if you are in combat.
+  kit:
+    description: Main command exector for kits
+  kits:
+    description: Lists all available kits.
+  teammate:
+  test:
