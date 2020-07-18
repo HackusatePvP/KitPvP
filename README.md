@@ -9,7 +9,7 @@ Supports 1.7.10 - 1.6
 
 ## Dependencies
 - LunarClient API ([LunarClientAPI](https://github.com/TewPingz/LunarClientAPI))
-- kBase ([kBase](Will come soon))
+- kBase ([kBase](https://github.com/HackusatePvP/kBase))
 - MongoDB
 
 ## Compile a Build
