@@ -1,5 +1,5 @@
 # KitPVP
-Supports 1.7.10 - 1.6
+Supports 1.7.10 - 1.16
 
 ## Features
 - Lunar client support
