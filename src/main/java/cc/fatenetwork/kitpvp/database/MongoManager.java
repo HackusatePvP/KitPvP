@@ -29,7 +29,7 @@ public class MongoManager {
         log.info("[KitPvP] starting database...");
         try {
             MongoClientURI uri;
-            uri = new MongoClientURI("mongodb://" + "admin" + ":" + "fate74" + "@" + "localhost" + ":" + 27017 + "/?authSource=" + "admin");            mongoClient = new MongoClient(uri);
+            uri = new MongoClientURI("mongodb://" + "admin" + ":" + "" + "@" + "localhost" + ":" + 27017 + "/?authSource=" + "admin");            mongoClient = new MongoClient(uri);
             log.info("[KitPvP] connected to database.");
         } catch (Exception e) {
             e.printStackTrace();
