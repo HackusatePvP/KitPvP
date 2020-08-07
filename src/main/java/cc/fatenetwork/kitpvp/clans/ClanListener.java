@@ -4,18 +4,18 @@ import cc.fatenetwork.kbase.utils.ClientAPI;
 import cc.fatenetwork.kitpvp.KitPvP;
 import cc.fatenetwork.kitpvp.clans.events.*;
 import cc.fatenetwork.kitpvp.profiles.Profile;
+import cc.fatenetwork.kitpvp.quests.Quest;
 import cc.fatenetwork.kitpvp.utils.StringUtil;
+import lombok.SneakyThrows;
+import net.mineaus.lunar.api.type.ServerRule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class ClanListener implements Listener {
     private final KitPvP plugin;
@@ -41,6 +41,9 @@ public class ClanListener implements Listener {
             player.sendMessage(StringUtil.format("&cClan prefix already exists."));
             event.setCancelled(true);
             return;
+        }
+        if (plugin.getQuestInterface().getActiveQuest(player).equals(Quest.CLAN_QUEST.getName())) {
+            plugin.getQuestInterface().onQuestComplete(player, Quest.CLAN_QUEST);
         }
         Bukkit.getOnlinePlayers().forEach(online -> online.sendMessage(StringUtil.format("&c" + player.getName() + " &7has created the clan &4" + event.getName())));
     }
@@ -82,19 +85,20 @@ public class ClanListener implements Listener {
     public void onClanMemberJoinEvent(ClanMemberLoginEvent event) {
         Player player = event.getPlayer();
         Clan clan = event.getClan();
-        Map<UUID, Map<String, Double>> players = new HashMap<>();
-        Map<String, Double> posMap = new HashMap<>();
-        posMap.put("a", 0.0);
         if (clan.getOnline() == null) {
             return;
         }
-        clan.getOnline().forEach(member -> {
-            try {
-                ClientAPI.sendTeamMate(player, member);
-            } catch (IOException e) {
-                e.printStackTrace();
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new BukkitRunnable() {
+            @Override
+            public void run() {
+                clan.getOnline().forEach(member -> {
+                    ClientAPI.updateNameTag(player, member, StringUtil.format("&a" + member.getName()));
+                    ClientAPI.sendTeamMate(member, player);
+                    ClientAPI.updateNameTag(member, player, StringUtil.format("&a" + player.getName()));
+                    ClientAPI.sendTeamMate(player, member);
+                });
             }
-        });
+        }, 20L);
         clan.getOnline().add(player);
     }
 
@@ -104,6 +108,9 @@ public class ClanListener implements Listener {
         if (plugin.getCombatManager().isCombat(player)) {
             player.sendMessage(StringUtil.format("&cYou cannot join a clan whilst in combat."));
             event.setCancelled(true);
+        }
+        if (plugin.getQuestInterface().getActiveQuest(player).equals(Quest.CLAN_QUEST.getNextQuest())) {
+            plugin.getQuestInterface().onQuestComplete(player, Quest.CLAN_QUEST);
         }
     }
 
@@ -134,6 +141,14 @@ public class ClanListener implements Listener {
                     event.setCancelled(true);
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onClanAttack(ClanFriendlyFireEvent event) {
+        Clan clan = event.getClan();
+        if (!clan.isTeamDamage()) {
+            event.setCancelled(true);
         }
     }
 

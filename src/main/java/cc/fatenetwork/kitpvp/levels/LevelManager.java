@@ -68,4 +68,14 @@ public class LevelManager implements LevelInterface {
         }
         var1.setLevel(newLevel);
     }
+
+    @Override
+    public void updateLevel(Profile var1) {
+        if (var1.getXp() >= 100) {
+            levelUp(var1);
+        }
+        Player player = var1.getPlayer();
+        player.setExp((float) var1.getXp() / 100);
+        player.setLevel(var1.getLevel());
+    }
 }

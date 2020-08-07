@@ -1,30 +1,32 @@
 package cc.fatenetwork.kitpvp.kits;
 
-import cc.fatenetwork.kitpvp.clans.Clan;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import cc.fatenetwork.kitpvp.KitPvP;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.Location;
 
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-public interface KitsManager {
+public class KitsManager {
+    private final KitPvP plugin;
 
-    List<Kit> getKits();
+    public KitsManager(KitPvP plugin) {
+        this.plugin = plugin;
+    }
 
-    Kit getKit(String var1);
-
-    Kit getKit(UUID var1);
-
-    boolean containsKit(Kit var1);
-
-    void createKit(Kit var1);
-
-    void removeKit(Kit var1);
-
-    Inventory getGui(Player var1);
-
-    void reloadKitData();
-
-    void saveKitData();
+    public boolean inRegion(Location loc, String s) {
+        Vector vec = new Vector(loc.getX(), loc.getY(), loc.getZ());
+        Map<String, ProtectedRegion> regions = plugin.getWorldGuard().getGlobalRegionManager().get(loc.getWorld()).getRegions();
+        boolean trueOrFalse = false;
+        for (String key : regions.keySet()) {
+            ProtectedRegion region = regions.get(key);
+            if (region.contains(vec)) {
+                if (key.contains(s)) {
+                    trueOrFalse = true;
+                    return true;
+                }
+            }
+        }
+        return trueOrFalse;
+    }
 }

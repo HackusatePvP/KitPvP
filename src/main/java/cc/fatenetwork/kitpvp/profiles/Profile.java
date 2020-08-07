@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class Profile {
     private UUID uuid, clanUUID;
-    private String name, activeQuest, clanName;
+    private String name, kit, activeQuest, clanName;
     private int kills,deaths,killstreak,objective,level;
     private long firstPlayed;
     private boolean chat,joinmsg,scoreboard;
@@ -20,6 +20,7 @@ public class Profile {
 
     public Profile(UUID uuid) {
         this.uuid = uuid;
+
     }
 
     public Player getPlayer() {

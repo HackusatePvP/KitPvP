@@ -67,7 +67,7 @@ public class ClanCommand implements CommandExecutor {
                             return true;
                         }
                         for (String a : clan.getInvited()) {
-                        player.sendMessage(StringUtil.format("&7* &9" + a));
+                            player.sendMessage(StringUtil.format("&7* &9" + a));
                         }
                     } else {
                         player.sendMessage(StringUtil.format("&cYou are not in a clan."));
@@ -87,9 +87,119 @@ public class ClanCommand implements CommandExecutor {
                     }
                     plugin.getClanManager().removeFromClan(player, clan);
                 }
-             } else if (args.length == 2) {
+
+                // in Clan commands
+                if (args[0].equalsIgnoreCase("open")) {
+                    if (!profile.isClan()) {
+                        player.sendMessage(StringUtil.format("&cYou must be in a clan to execute this command."));
+                        return true;
+                    }
+                    Clan clan = plugin.getClanManager().getClan(profile.getClanUUID());
+                    if (clan == null) {
+                        player.sendMessage(StringUtil.format("&cCould not find clan."));
+                        return true;
+                    }
+                    if (!clan.getElites().contains(player.getName())) {
+                        player.sendMessage(StringUtil.format("&cYou must be an elite member or higher to execute this command."));
+                        return true;
+                    }
+                    if (clan.isOpen()) {
+                        clan.setOpen(false);
+                        player.sendMessage(StringUtil.format("&cYou have closed the clan."));
+                        return true;
+                    }
+                    player.sendMessage(StringUtil.format("&aThe clan is now opened."));
+                    clan.setOpen(true);
+                }
+                if (args[0].equalsIgnoreCase("teamdamage")) {
+                    if (!profile.isClan()) {
+                        player.sendMessage(StringUtil.format("&cYou must be in a clan to execute this command."));
+                        return true;
+                    }
+                    Clan clan = plugin.getClanManager().getClan(profile.getClanUUID());
+                    if (clan == null) {
+                        player.sendMessage(StringUtil.format("&cCould not find clan."));
+                        return true;
+                    }
+                    if (!clan.getElites().contains(player.getName())) {
+                        player.sendMessage(StringUtil.format("&cYou must be an elite member or higher to execute this command."));
+                        return true;
+                    }
+                    if (clan.isTeamDamage()) {
+                        clan.setTeamDamage(false);
+                        player.sendMessage(StringUtil.format("&cYou have disabled team damage."));
+                        for (Player member : clan.getOnline()) {
+                            if (ClientAPI.isClient(member)) {
+                                ClientAPI.sendNotification(member, "Team damage is now disabled", 5);
+                            }
+                        }
+                        return true;
+                    }
+                    clan.setTeamDamage(true);
+                    player.sendMessage(StringUtil.format("&cYou have &aenabled &7team damage."));
+                    for (Player member : clan.getOnline()) {
+                        if (ClientAPI.isClient(member)) {
+                            ClientAPI.sendNotification(member, "Team damage is now enabled", 5);
+                        }
+                    }
+                }
+                if (args[0].equalsIgnoreCase("settings")) {
+                    if (!profile.isClan()) {
+                        player.sendMessage(StringUtil.format("&cYou must be in a clan to execute this command."));
+                        return true;
+                    }
+                    Clan clan = plugin.getClanManager().getClan(profile.getClanUUID());
+                    if (clan == null) {
+                        player.sendMessage(StringUtil.format("&cCould not find clan."));
+                        return true;
+                    }
+                    if (!clan.getElites().contains(player.getName())) {
+                        player.sendMessage(StringUtil.format("&cYou must be an elite member or higher to execute this command."));
+                        return true;
+                    }
+                    player.openInventory(plugin.getGuiManager().getClanGUI().getClanSettings(clan));
+                }
+            } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("create")) {
                     player.sendMessage(StringUtil.format("&c/clan create <" + args[1] + "> <prefix>"));
+                }
+                if (args[0].equalsIgnoreCase("rival")) {
+                    if (!profile.isClan()) {
+                        player.sendMessage(StringUtil.format("&cYou are not in a clan."));
+                        return true;
+                    }
+                    Clan clan = plugin.getClanManager().getClan(profile.getClanUUID());
+                    if (clan == null) {
+                        player.sendMessage(StringUtil.format("&cClan not found."));
+                        return true;
+                    }
+                    if (!(clan.getLeader() == player.getUniqueId())) {
+                        player.sendMessage(StringUtil.format("&cOnly leaders can rival other clans."));
+                        return true;
+                    }
+
+                    String attempt = args[1];
+                    Clan rival = plugin.getClanManager().getClan(attempt);
+                    if (attempt == null) {
+                        player.sendMessage(StringUtil.format("&cCould not find clan with name."));
+                        return true;
+                    }
+                    if (plugin.getClanManager().rivalMap().containsKey(clan)) {
+                        Clan found = plugin.getClanManager().rivalMap().get(clan);
+                        if (found.getName().equals(rival.getName())) {
+                            plugin.getClanManager().acceptRivalRequest(clan, rival);
+                        } else if (plugin.getClanManager().rivalMap().get(rival).getName().equals(clan.getName())) {
+                            plugin.getClanManager().acceptRivalRequest(rival, clan);
+                        } else {
+                            plugin.getClanManager().sendRivalRequest(clan, rival);
+                        }
+                    }
+
+                    /*for (Clan attempt : plugin.getClanManager().rivalMap().values()) {
+                        if (attempt.getName().equals(clan.getName())) {
+
+                        }
+                    }*/
                 }
                 if (args[0].equalsIgnoreCase("disband")) {
                     if (!args[1].equalsIgnoreCase(profile.getClanName())) {
@@ -113,11 +223,49 @@ public class ClanCommand implements CommandExecutor {
                                 .setClick(ClickAction.RUN_COMMAND, "" + "/clan disband " + args[1]).append(" CONFIRM").setColor(ChatColor.GREEN).setBold(true).append(" this action.")
                                 .setColor(ChatColor.GRAY).send(player);
                         disbandMap.put(player.getUniqueId(), clan);
+                        plugin.getClanManager().removeClan(clan);
+                        plugin.getMongoManager().delete(profile, clan);
                         return true;
                     }
 
                     player.sendMessage(StringUtil.format("&cYou have disbanded the clan."));
                     plugin.getMongoManager().delete(profile, clan);
+                }
+                if (args[0].equalsIgnoreCase("promote")) {
+                    if (!profile.isClan()) {
+                        player.sendMessage(StringUtil.format("&cYou are not in a clan."));
+                        return true;
+                    }
+                    Clan clan = plugin.getClanManager().getClan(profile.getClanUUID());
+                    if (clan == null) {
+                        player.sendMessage(StringUtil.format("&cClan not found."));
+                        return true;
+                    }
+                    if (!(clan.getLeader() == player.getUniqueId())) {
+                        player.sendMessage(StringUtil.format("&cOnly the leader can promote."));
+                        return true;
+                    }
+                    Player target = Bukkit.getPlayerExact(args[1]);
+                    if (target == null) {
+                        player.sendMessage(StringUtil.format("&cTarget not found."));
+                        return true;
+                    }
+                    Profile tar = plugin.getProfileManager().getProfile(target.getUniqueId());
+                    if (!tar.isClan()) {
+                        player.sendMessage(StringUtil.format("&cTarget is not in a clan."));
+                        return true;
+                    }
+                    if (!(tar.getClanUUID() == profile.getClanUUID())) {
+                        player.sendMessage(StringUtil.format("&cTarget is not in your clan."));
+                        return true;
+                    }
+                    if (clan.getElites().contains(target.getName())) {
+                        player.sendMessage(StringUtil.format("&cYou cannot promote this player any further."));
+                        return true;
+                    }
+                    clan.getElites().add(player.getName());
+                    target.sendMessage(StringUtil.format("&aYou have been promoted to an elite."));
+                    player.sendMessage(StringUtil.format("&7You have promoted &c" + target.getUniqueId() + " &7to an &aelite."));
                 }
                 if (args[0].equalsIgnoreCase("join")) {
                     if (profile.isClan()) {
@@ -144,7 +292,7 @@ public class ClanCommand implements CommandExecutor {
                     }
                     player.sendMessage(StringUtil.format("&7You have joined &4" + clan.getName()));
                     if (ClientAPI.isClient(player)) {
-                        ClientAPI.sendNotification(player, "You have joined a clan.", 5, TimeUnit.SECONDS);
+                        ClientAPI.sendNotification(player, "You have joined a clan.", 5);
                     }
                     plugin.getClanManager().joinClan(player, clan);
                     clan.getOnline().forEach(member -> member.sendMessage(StringUtil.format("&c" + player.getName() + " &7has joined the clan.")));
@@ -225,8 +373,12 @@ public class ClanCommand implements CommandExecutor {
                     clan1.getOnline().add(player);
                     clan1.setMembers(new ArrayList<>());
                     clan1.setInvited(new ArrayList<>());
+                    clan1.setElites(new ArrayList<>());
                     clan1.getOnline().add(player);
                     clan1.getMembers().add(player.getName());
+                    clan1.getElites().add(player.getName());
+                    clan1.setOpen(false);
+                    clan1.setTeamDamage(false);
                     profile.setClanName(clan);
                     profile.setClanUUID(uuid);
                     plugin.getClanManager().createClan(clan1);

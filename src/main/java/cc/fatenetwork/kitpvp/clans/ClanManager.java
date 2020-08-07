@@ -11,6 +11,8 @@ public interface ClanManager {
 
     List<Clan> getClans();
 
+    Map<Clan, Clan> rivalMap();
+
     Clan getClan(String var1);
 
     Clan getClan(UUID var1);
@@ -22,6 +24,14 @@ public interface ClanManager {
     void createClan(Clan var1);
 
     void removeClan(Clan var1);
+
+    void sendRivalRequest(Clan var1, Clan var2);
+
+    void acceptRivalRequest(Clan var1, Clan var2);
+
+    void addRival(Clan var1, Clan var2);
+
+    void removeRival(Clan var1, Clan var2);
 
     void addToClan(Player var1, Clan var2);
 

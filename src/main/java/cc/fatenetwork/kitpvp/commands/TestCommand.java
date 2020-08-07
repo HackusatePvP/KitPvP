@@ -32,7 +32,12 @@ public class TestCommand implements CommandExecutor {
         message.add("Clan: " + profile.isClan());
         message.add("ClanUUID: " + profile.getClanUUID());
         message.add("ClanName " + profile.getClanName());
+        message.add("Kit: " + profile.getKit());
         message.add("&7&m--------------------------------------------------");
+        for (String key : plugin.getProfileManager().getKitMap().keySet()) {
+            int value = plugin.getProfileManager().getKitMap().get(key);
+            message.add(key + ": " + value);
+        }
         message.forEach(msg -> player.sendMessage(StringUtil.format(msg)));
         return false;
     }

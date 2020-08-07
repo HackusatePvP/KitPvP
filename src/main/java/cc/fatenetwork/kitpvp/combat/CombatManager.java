@@ -11,6 +11,8 @@ import java.util.Set;
 public class CombatManager {
     private final Set<Player> combatSet = new HashSet<>();
     private final Set<Player> enderpealSet = new HashSet<>();
+    private final Set<Player> spawnSet = new HashSet<>();
+    private final Map<Player, Integer> spawnMap = new HashMap<>();
     private final Map<Player, Integer> timeMap = new HashMap<>();
     private final Map<Player, Integer> enderpealMap = new HashMap<>();
     private final HashMap<Player, Player> targetMap = new HashMap<>();
@@ -28,6 +30,22 @@ public class CombatManager {
     public void setCombatTime(Player player, int time) {
         timeMap.remove(player);
         timeMap.put(player, time);
+    }
+
+    public void setSpawnSet(Player player, boolean b) {
+         if (b) {
+             spawnSet.add(player);
+             spawnMap.put(player, 5);
+
+         } else {
+             spawnSet.remove(player);
+             spawnMap.remove(player);
+         }
+    }
+
+    public void setSpawnTime(Player player, int time) {
+        spawnMap.remove(player);
+        spawnMap.put(player, time);
     }
 
     public void setEnderpealSet(Player player, boolean b) {
@@ -49,8 +67,16 @@ public class CombatManager {
         return combatSet.contains(player);
     }
 
+    public boolean isSpawn(Player player) {
+        return spawnSet.contains(player);
+    }
+
     public boolean isEnderpearlCooldown(Player player) {
         return enderpealSet.contains(player);
+    }
+
+    public int getSpawnTime(Player player) {
+        return spawnMap.get(player);
     }
 
     public int getCombatTime(Player player) {

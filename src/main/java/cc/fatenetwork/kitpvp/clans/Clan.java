@@ -9,9 +9,12 @@ import java.util.*;
 public class Clan {
     private UUID uuid, leader;
     private String name, prefix;
+    private boolean teamDamage, open;
     private ArrayList<String> members;
-    private List<Player> online = new ArrayList<>();
+    private ArrayList<String> elites;
     private ArrayList<String> invited;
+    private ArrayList<String> rivals;
+    private List<Player> online = new ArrayList<>();
 
     public Clan(UUID uuid) {
         this.uuid = uuid;

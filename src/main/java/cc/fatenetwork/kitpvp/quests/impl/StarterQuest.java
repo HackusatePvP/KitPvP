@@ -17,7 +17,7 @@ public class StarterQuest extends Quest {
     private final KitPvP plugin;
 
     public StarterQuest(KitPvP plugin) {
-        super("Starter Quest");
+        super("Starter Quest", plugin);
         this.plugin = plugin;
     }
 
@@ -37,9 +37,12 @@ public class StarterQuest extends Quest {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(StringUtil.format("&9" + getName()));
         List<String> lore = new ArrayList<>();
+        lore.add("&7&m-------------------------");
         lore.add("&b" + getDescription());
+        lore.add("");
         lore.add("&7Goal: &9" + getGoal());
         lore.add("&7Progress: &9" + 0 + "%");
+        lore.add("&7&m-------------------------");
         itemMeta.setLore(StringUtil.format(lore));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -47,7 +50,7 @@ public class StarterQuest extends Quest {
 
     @Override
     public String getNextQuest() {
-        return null;
+        return Quest.KILLSTREAK_I_QUEST.getName();
     }
 
     @Override
@@ -61,7 +64,16 @@ public class StarterQuest extends Quest {
     }
 
     @Override
-    public void onKillPlayer(Player player) {
-        plugin.getQuestInterface().onQuestComplete(player, this);
+    public void onKillPlayer(Player player, Player attacker) {
+        plugin.getQuestInterface().onQuestComplete(attacker, this);
+    }
+
+    @Override
+    public void onComplete(Player player, Quest quest) {
+        if (quest == this) {
+            Profile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
+            profile.getQuests().add(Quest.CLAN_QUEST.getName());
+            profile.setActiveQuest(quest.getNextQuest());
+        }
     }
 }

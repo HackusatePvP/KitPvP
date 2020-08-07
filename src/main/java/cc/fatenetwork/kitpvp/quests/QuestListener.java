@@ -5,6 +5,7 @@ import cc.fatenetwork.kitpvp.KitPvP;
 import cc.fatenetwork.kitpvp.profiles.Profile;
 import cc.fatenetwork.kitpvp.quests.events.QuestCompleteEvent;
 import lombok.SneakyThrows;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,11 +27,12 @@ public class QuestListener implements Listener {
         Profile profile = plugin.getProfileManager().getProfile(player.getUniqueId());
         Quest quest = event.getQuest();
         if (ClientAPI.isClient(player)) {
-            ClientAPI.sendNotification(player, "You have completed " + quest.getName() + ".", 5, TimeUnit.SECONDS);
+            ClientAPI.sendNotification(player, "You have completed " + quest.getName() + ".", 5);
         }
         if (quest.getNextQuest() != null) {
             profile.setActiveQuest(quest.getNextQuest());
         }
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1f, 1f);
     }
 
     @EventHandler
@@ -41,7 +43,7 @@ public class QuestListener implements Listener {
             Profile profile = plugin.getProfileManager().getProfile(killer.getUniqueId());
             if (profile.getActiveQuest() != null) {
                 Quest quest = Quest.getByName(profile.getActiveQuest());
-                quest.onKillPlayer(player);
+                quest.onKillPlayer(player, killer);
             }
         }
     }

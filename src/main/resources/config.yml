@@ -1,1 +1,291 @@
 kit-clear: false
+
+#
+# Server setting configurations
+#
+server:
+  kitpvp:
+    tax: 3.0
+    money: 10000 #This is the lot money, players can get a chance to a partion of this money, this money can come from taxes such as, combat log tax,
+
+broadcast:
+  Quest:
+    name: "Quest"
+    message: "&7Complete &cQUESTS &7to earn extra &aXP &7and more!"
+    enabled: true
+
+shop:
+  0:
+    material: "CHAINMAIL_HELMET"
+    name: "&a* &7Chain Helmet"
+    lore:
+      - ""
+      - "&6* &7Coast: &a10.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 10
+  1:
+    material: "CHAINMAIL_CHESTPLATE"
+    name: "&a* &7Chain Chestplate"
+    lore:
+      - ""
+      - "&6* &7Coast: &a14.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 14
+  2:
+    material: "CHAINMAIL_LEGGINGS"
+    name: "&a* &7Chain Leggings"
+    lore:
+      - ""
+      - "&6* &7Coast: &a12.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 12
+  3:
+    material: "CHAINMAIL_BOOTS"
+    name: "&a* &7Chain Boots"
+    lore:
+      - ""
+      - "&6* &7Coast: &a9.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 9
+  4:
+    material: "STONE_SWORD"
+    name: "&a* &7Stone Sword"
+    lore:
+      - ""
+      - "&6* &7Coast: &92.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 2
+  5:
+    material: "POTION"
+    name: "&a* &bSpeed &7(8:00)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a2.00$"
+      - ""
+      - "&7&oClick to purchase"
+    potion: "SPEED"
+    type: "SPEED"
+    splash: false
+    duration: 9600
+    amplifier: 0
+    price: 2.00
+  6:
+    material: "POTION"
+    name: "&a* &bSpeed II &7(1:30)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a6.00$"
+      - ""
+      - "&7&oClick to purchase"
+    potion: "SPEED"
+    type: "SPEED"
+    splash: false
+    duration: 1600
+    amplifier: 1
+    price: 6.00
+  7:
+    material: "POTION"
+    name: "&a* &cStrength &7(3:00)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a25.00$"
+      - ""
+      - "&7&oClick to purchase"
+    potion: "INCREASE_DAMAGE"
+    type: "STRENGTH"
+    splash: false
+    duration: 3600
+    amplifier: 0
+    price: 25
+  8:
+    material: "POTION"
+    name: "&a* &cStrength II &7(1:30)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a50.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    potion: "INCREASE_DAMAGE"
+    type: "STRENGTH"
+    splash: false
+    duration: 1600
+    amplifier: 1
+    price: 50
+  9:
+    material: "IRON_HELMET"
+    name: "&a* &fIron Helmet"
+    lore:
+      - ""
+      - "&6* &7Coast: &a20.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    price: 20
+  10:
+    material: "IRON_CHESTPLATE"
+    name: "&a* &fIron Chestplate"
+    lore:
+      - ""
+      - "&6* &7Coast: &a28.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    price: 28
+  11:
+    material: "IRON_LEGGINGS"
+    name: "&a* &fIron Leggings"
+    lore:
+      - ""
+      - "&6* &7Coast: &a24.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    price: 24
+  12:
+    material: "IRON_BOOTS"
+    name: "&a* &fIron Boots"
+    lore:
+      - ""
+      - "&6* &7Coast: &a18.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    price: 18
+  13:
+    material: "IRON_SWORD"
+    name: "&a* &fIron Sword"
+    lore:
+      - ""
+      - "&6* &7Coast: &a20.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    price: 20
+  14:
+    material: "POTION"
+    name: "&a* &6Fire Resistance &7(3:00)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a50.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    potion: "FIRE_RESISTANCE"
+    type: "FIRE_RESISTANCE"
+    splash: false
+    duration: 3600
+    amplifier: 0
+    price: 35
+  15:
+    material: "POTION"
+    name: "&a* &6Fire Resistance &7(8:00)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a50.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    potion: "FIRE_RESISTANCE"
+    type: "FIRE_RESISTANCE"
+    splash: false
+    duration: 9600
+    amplifier: 0
+    price: 45
+  16:
+    material: "POTION"
+    name: "&a* &cInstant Health &7(I)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a15.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    potion: "HEAL"
+    type: "INSTANT_HEAL"
+    splash: true
+    duration: 0
+    amplifier: 0
+    price: 15
+  17:
+    material: "POTION"
+    name: "&a* &cInstant Health &7(II)"
+    lore:
+      - ""
+      - "&6* &7Coast: &a30.00$"
+      - ""
+      - "&7&oClick to Purchase"
+    potion: "HEAL"
+    type: "INSTANT_HEAL"
+    splash: true
+    duration: 0
+    amplifier: 1
+    price: 30
+  18:
+    material: "DIAMOND_HELMET"
+    name: "&a* &9Diamond Helmet"
+    lore:
+      - ""
+      - "&6* &7Coast: &a40.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 40
+  19:
+    material: "DIAMOND_CHESTPLATE"
+    name: "&a* &9Diamond Chestplate"
+    lore:
+      - ""
+      - "&6* &7Coast: &a56.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 56
+  20:
+    material: "DIAMOND_LEGGINGS"
+    name: "&a* &9Diamond Leggings"
+    lore:
+      - ""
+      - "&6* &7Coast: &a54.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 54
+  21:
+    material: "DIAMOND_BOOTS"
+    name: "&a* &9Diamond Boots"
+    lore:
+      - ""
+      - "&6* &7Coast: &a36.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 36
+  22:
+    material: "DIAMOND_SWORD"
+    name: "&a* &9Diamond Sword"
+    lore:
+      - ""
+      - "&6* &7Coast: &a40.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 40
+  23:
+    material: "FISHING_ROD"
+    name: "&a* &eRod"
+    lore:
+      - ""
+      - "&6* &7Coast: &a2.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 2
+  24:
+    material: "ENDER_PEARL"
+    name: "&a* &5Pearl"
+    lore:
+      - ""
+      - "&6* &7Coast: &a15.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 15
+  25:
+    material: "GOLDEN_APPLE"
+    name: "&a* &eCrapple"
+    lore:
+      - ""
+      - "&6* &7Coast: &a5.00$"
+      - ""
+      - "&7&oClick to purchase"
+    price: 5

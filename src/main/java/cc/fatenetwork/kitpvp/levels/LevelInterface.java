@@ -16,4 +16,6 @@ public interface LevelInterface {
     void levelUp(Player var1);
 
     void levelUp(Profile var1);
+
+    void updateLevel(Profile var1);
 }

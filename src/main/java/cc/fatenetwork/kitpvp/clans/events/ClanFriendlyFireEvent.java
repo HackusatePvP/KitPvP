@@ -26,6 +26,10 @@ public class ClanFriendlyFireEvent extends PlayerEvent implements Cancellable {
         return clan;
     }
 
+    public static HandlerList getHandlerList(){
+        return handlers;
+    }
+
     @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;

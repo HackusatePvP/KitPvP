@@ -5,6 +5,12 @@ api-version: 1.8.8
 authors: [Hackusate_PvP]
 website: www.fatenetwork.cc
 commands:
+  applykit:
+    description: Apply your deafult kit
+  balance:
+    aliases: [bal]
+  economy:
+    aliases: [eco]
   clan:
     aliases: [clans]
     description: Main comman executor for clans.
@@ -15,5 +21,15 @@ commands:
     description: Main command exector for kits
   kits:
     description: Lists all available kits.
+  lunarclient:
+    aliases: [lunar, lc]
+    description: Get information about the luanr client
+  quest:
+    aliases: [quests]
+    description: View all your quests.
+  settings:
+    aliases: [profile]
+  shop:
+  spawn:
   teammate:
   test:
